@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 
 class Login extends Component {
     constructor(p) {
@@ -11,16 +12,17 @@ class Login extends Component {
     async onLogin() {
         let mobile = document.getElementById('mobile').value;
         let password = document.getElementById('password').value;
+        let pattern = /[6-9]{1}[0-9]{9}/;
 
         if (!mobile) {
-            document.getElementById('invalid-feedback-mobile').style.display = 'block';
+            toast.error('Mobile can not be Empty!');
         } else if (mobile.length !== 10) {
-            document.getElementById('invalid-feedback-mobile').style.display = 'block';
-        }
-        if (!password) {
-            document.getElementById('invalid-feedback-password').style.display = 'block';
-        }
-        if (mobile && password) {
+            toast.error('Mobile Must Be 10 Digits Only!')
+        } else if (!pattern.test(mobile)) {
+            toast.error('Invalid Mobile');
+        } else if (!password) {
+            toast.error('Password Cant not be Empty!')
+        } else if (mobile && password) {
             try {
                 let response = await axios({
                     method: 'post',
@@ -35,7 +37,10 @@ class Login extends Component {
                 })
                 if (response.status === 200) {
                     if (response.data.responscode === '200') {
+                        toast.success('Login Success');
                         this.props.history.push("/dashboard");
+                    } else {
+                        toast.error('Invaliv Mobile Or Password');
                     }
                 } else {
                     return {
@@ -63,7 +68,7 @@ class Login extends Component {
 
                     <main>
                         <div className="container">
-
+                            <ToastContainer autoClose={1000} />
                             <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                                 <div className="container">
                                     <div className="row justify-content-center">
@@ -87,17 +92,15 @@ class Login extends Component {
                                                     <form className="row g-3 needs-validation">
 
                                                         <div className="col-12">
-                                                            <label for="mobile" className="form-label">Mobile</label>
+                                                            <label htmlFor="mobile" className="form-label">Mobile</label>
                                                             <div className="input-group has-validation">
-                                                                <input type="tel" name="mobile" pattern="[6-9]{1}[0-9]{9}" className="form-control" id="mobile" required onChange={() => { document.getElementById("invalid-feedback-mobile").style.display = 'none' }} />
-                                                                <div className="invalid-feedback" id="invalid-feedback-mobile">Please enter Valid Mobile.</div>
+                                                                <input type="tel" name="mobile" className="form-control" id="mobile" required />
                                                             </div>
                                                         </div>
 
                                                         <div className="col-12">
-                                                            <label for="yourPassword" className="form-label">Password</label>
-                                                            <input type="password" name="password" className="form-control" id="password" required onChange={() => { document.getElementById("invalid-feedback-password").style.display = 'none' }} />
-                                                            <div className="invalid-feedback" id="invalid-feedback-password">Please enter your password!</div>
+                                                            <label htmlFor="yourPassword" className="form-label">Password</label>
+                                                            <input type="password" name="password" className="form-control" id="password" required />
                                                         </div>
 
                                                         <div className="col-12">
