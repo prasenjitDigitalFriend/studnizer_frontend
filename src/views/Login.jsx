@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
 class Login extends Component {
@@ -75,10 +76,10 @@ class Login extends Component {
                                         <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
                                             <div className="d-flex justify-content-center py-4">
-                                                <a href="index.html" className="logo d-flex align-items-center w-auto">
+                                                <div className="logo d-flex align-items-center w-auto">
                                                     <img src="assets/img/logo.png" alt="" />
                                                     <span className="d-none d-lg-block">StudNizer</span>
-                                                </a>
+                                                </div>
                                             </div>
 
                                             <div className="card mb-3">
@@ -107,7 +108,7 @@ class Login extends Component {
                                                             <button className="btn btn-primary w-100" type="button" onClick={() => this.onLogin()}>Login</button>
                                                         </div>
                                                         <div className="col-12">
-                                                            <p className="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
+                                                            <p className="small mb-0">Don't have account? <Link to={'/register'}>Create an account</Link></p>
                                                         </div>
                                                     </form>
 
