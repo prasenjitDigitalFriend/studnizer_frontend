@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { DEPT, PROFILE_PIC, USERNAME } from '../api/data.api';
 
 class Navbar extends Component {
+
+    removeHttp(url) {
+        return url.replace(/^http?:\/\//, '');
+    }
 
     render() {
         return (
@@ -170,14 +176,14 @@ class Navbar extends Component {
                             <li className="nav-item dropdown pe-3">
 
                                 <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                                    <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle" />
-                                    <span className="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                                    <img src={process.env.PUBLIC_URL + PROFILE_PIC()} rel="noopener noreferrer" alt="Profile" className="rounded-circle" />
+                                    <span className="d-none d-md-block dropdown-toggle ps-2">{USERNAME()}</span>
                                 </a>
 
                                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                                     <li className="dropdown-header">
-                                        <h6>Kevin Anderson</h6>
-                                        <span>Web Designer</span>
+                                        <h6>{USERNAME()}</h6>
+                                        <span>{DEPT()}</span>
                                     </li>
                                     <li>
                                         <hr className="dropdown-divider" />
@@ -214,10 +220,10 @@ class Navbar extends Component {
                                     </li>
 
                                     <li>
-                                        <a className="dropdown-item d-flex align-items-center" href="#">
+                                        <Link className="dropdown-item d-flex align-items-center" to={'/'}>
                                             <i className="bi bi-box-arrow-right"></i>
                                             <span>Sign Out</span>
-                                        </a>
+                                        </Link>
                                     </li>
 
                                 </ul>

@@ -1,22 +1,59 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { postApi } from '../api/call.api';
+import urlApi from '../api/url.api';
 import { toast, ToastContainer } from 'react-toastify';
 
 class Register extends Component {
     constructor(p) {
         super(p);
         this.state = {
+            picUpload: '',
         }
     }
 
     fileOnChange = async (e) => {
-        // await this.setState({ picUpload: e.target.files[0] });
+        await this.setState({ picUpload: e.target.files[0] });
         document.getElementById("pic-preview").src = URL.createObjectURL(e.target.files[0]);
     }
 
-    signUp(){
-        if(!document.getElementById('yourName').value){
+    async signUp() {
+        if (!document.getElementById('yourName').value) {
             toast.error('Name can not be Empty!');
+        } else if (document.getElementById('password').value != document.getElementById('confirmPassword').value) {
+            toast.error('Password & Confirm Password Are Not Same !!!')
+        }
+        else {
+            if (this.state.picUpload) {
+                const formData = new FormData();
+                formData.append(
+                    "file_data", this.state.picUpload,
+                );
+                let respPic = await postApi(formData, urlApi.profilePicUpload);
+                if (respPic.responsecode === '200') {
+                    let postData = {
+                        "username": document.getElementById('yourName').value,
+                        "password": document.getElementById('confirmPassword').value,
+                        "mobile": document.getElementById('mobile').value,
+                        "email": document.getElementById('email').value,
+                        "dept": document.getElementById('dept').value,
+                        "sem": document.getElementById('sem').value,
+                        "year": document.getElementById('year').value,
+                        "college": document.getElementById('college').value,
+                        "university": document.getElementById('university').value,
+                        "profile_picture": respPic.data
+                    }
+                    let resp = await postApi(postData, urlApi.signUp);
+                    if (resp.responsecode === '200') {
+                        toast.success(resp.message);
+                        this.props.history.push("/");
+                    } else {
+                        toast.error(resp.message);
+                    }
+                } else {
+                    toast.error(respPic.message);
+                }
+            }
         }
     }
 
@@ -26,7 +63,7 @@ class Register extends Component {
                 <body className={this.state.isOpen ? 'toggle-sidebar' : ''}>
                     <main>
                         <div className="container">
-                        <ToastContainer autoClose={1000} />
+                            <ToastContainer autoClose={1000} />
                             <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                                 <div className="container">
                                     <div className="row justify-content-center">
@@ -54,7 +91,7 @@ class Register extends Component {
 
                                                         <div class="col-12">
                                                             <label for="yourEmail" class="form-label">Your Email</label>
-                                                            <input type="email" name="email" class="form-control form-control-sm" id="yourEmail" required />
+                                                            <input type="email" name="email" class="form-control form-control-sm" id="email" required />
                                                         </div>
 
                                                         <div class="col-12">
@@ -65,8 +102,8 @@ class Register extends Component {
                                                         <div className="col-12">
                                                             <label htmlFor="">Profile Pic</label>
                                                             <div className="">
-                                                                <input type="file" name="profile_picture" onChange={(e)=>this.fileOnChange(e)} class="form-control form-control-sm" id="profile_pic" required />
-                                                                <img src="" alt="" id='pic-preview' className='mt-2 me-auto ms-auto d-flex justify-content-center' style={{maxHeight:100,width:100,borderRadius:10}}/>
+                                                                <input type="file" name="profile_picture" onChange={(e) => this.fileOnChange(e)} class="form-control form-control-sm" id="profile_pic" required />
+                                                                <img src="" alt="" id='pic-preview' className='mt-2 me-auto ms-auto d-flex justify-content-center' style={{ maxHeight: 200, width: 200, borderRadius: 10 }} />
                                                             </div>
                                                         </div>
 
@@ -82,7 +119,7 @@ class Register extends Component {
 
                                                         <div class="col-12">
                                                             <label for="yourUsername" class="form-label">University</label>
-                                                            <input type="text" name="university" class="form-control form-control-sm" id="University" required />
+                                                            <input type="text" name="university" class="form-control form-control-sm" id="university" required />
                                                         </div>
 
                                                         <div class="col-12">
@@ -113,7 +150,7 @@ class Register extends Component {
                                                             </div>
                                                         </div> */}
                                                         <div class="col-12">
-                                                            <button class="btn btn-primary w-100" type="button" onClick={()=>this.signUp()}>Create Account</button>
+                                                            <button class="btn btn-primary w-100" type="button" onClick={() => this.signUp()}>Create Account</button>
                                                         </div>
                                                         <div class="col-12">
                                                             <p class="small mb-0">Already have an account? <Link to={"/"}>Log in</Link></p>
