@@ -1,7 +1,9 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import { postApi } from '../api/call.api';
+import { USERNAME } from '../api/data.api';
+import urlApi from '../api/url.api'
 
 class Login extends Component {
     constructor(p) {
@@ -24,42 +26,31 @@ class Login extends Component {
         } else if (!password) {
             toast.error('Password Cant not be Empty!')
         } else if (mobile && password) {
-            try {
-                let response = await axios({
-                    method: 'post',
-                    url: 'http://localhost:7553/student/login',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: {
-                        'username': mobile,
-                        'password': password
-                    }
-                })
-                if (response.status === 200) {
-                    if (response.data.responscode === '200') {
-                        toast.success('Login Success');
-                        this.props.history.push("/dashboard");
-                    } else {
-                        toast.error('Invaliv Mobile Or Password');
-                    }
-                } else {
-                    return {
-                        status: "error",
-                        message: "Server Error",
-                        responsecode: "500",
-                        data: null,
-                    };
+            let postData = {
+                'username': mobile,
+                'password': password
+            }
+            let resp = await postApi(postData, urlApi.login);
+            localStorage.setItem("username", resp.data.username);
+            localStorage.setItem("profile_pic", resp.data.profile_picture);
+            localStorage.setItem("user_id", resp.data.student_id);
+            localStorage.setItem("dept", resp.data.dept);
+            if (resp.responsecode === '200') {
+                toast.success('Login Success');
+                if (USERNAME()) {
+                    this.props.history.push("/dashboard");
                 }
-            } catch (e) {
-                return {
-                    status: "error",
-                    message: e.message,
-                    responsecode: "500",
-                    data: null,
-                };
+            } else {
+                toast.error('Invalid Mobile Or Password');
             }
         }
+    };
+
+    componentDidMount() {
+        localStorage.setItem("username", '');
+        localStorage.setItem("profile_pic", '');
+        localStorage.setItem("user_id", '');
+        localStorage.setItem("dept", '');
     }
 
     render() {
