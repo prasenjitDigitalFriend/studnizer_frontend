@@ -175,8 +175,8 @@ class Navbar extends Component {
 
                             <li className="nav-item dropdown pe-3">
 
-                                <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                                    <img src={process.env.PUBLIC_URL + PROFILE_PIC()} rel="noopener noreferrer" alt="Profile" className="rounded-circle" />
+                                <a className="nav-link nav-profile d-flex align-items-center pe-0" href={""} data-bs-toggle="dropdown">
+                                    <img src={'file:///'+(PROFILE_PIC().replace('http://localhost:3000', '')).replace(/\\/g, '/')} rel="noopener noreferrer" alt="Profile" className="rounded-circle" />
                                     <span className="d-none d-md-block dropdown-toggle ps-2">{USERNAME()}</span>
                                 </a>
 
