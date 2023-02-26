@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { postApi } from '../api/call.api';
-import { USERNAME } from '../api/data.api';
+import { USERID, USERNAME } from '../api/data.api';
 import urlApi from '../api/url.api'
 
 class Login extends Component {
@@ -37,7 +37,7 @@ class Login extends Component {
             localStorage.setItem("dept", resp.data.dept);
             if (resp.responsecode === '200') {
                 toast.success('Login Success');
-                if (USERNAME()) {
+                if (USERNAME() && USERID()) {
                     this.props.history.push("/dashboard");
                 }
             } else {
