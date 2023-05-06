@@ -55,7 +55,6 @@ class Todo extends Component {
             "toDate": toDate || ''
         }
         let resp = await postApi(postData, urlApi.allTodo + this.state.page);
-        console.log(postData);
         if (resp.responsecode === "200") {
             this.setState({ tableData: resp.data.data });
             this.setState({ pagination: resp.data.pagination });
@@ -114,56 +113,30 @@ class Todo extends Component {
                     <main id="main" class="main">
                         <ToastContainer autoClose={1000} />
                         <div className="row">
-
-                        </div>
-                        <div className="row">
-                            <div className="col-md-2 col-5 mb-2">
-                                <input type="date" className='form-control form-control-sm w-100' id='from-date-filter' />
-                            </div>
-                            <div className="col-md-1 mb-2 col text-center"> <BsArrowLeftRight /> </div>
-                            <div className="col-md-2 col-5 mb-2">
-                                <input type="date" className='form-control form-control-sm w-100' id='to-date-filter' />
-                            </div>
-                            <div className="col-md-1 col">
-                                <button className='btn btn-sm rounded btn-success w-100' onClick={() => this.getAllTodo({ dateFilter: "CUSTOM" })}>Search</button>
-                            </div>
-                            <div className="col-md-2 col-2">
-                                <button className='btn btn-sm btn-warning w-sm-100' onClick={() => this.resetFields()}><GrPowerReset size={20} /></button>
-                            </div>
-                        </div>
-                        <div className="row">
                             <form onSubmit={(e) => { e.preventDefault(); this.onSearch() }}>
                                 <div className="col-12 mb-2">
                                     <div className="row">
                                         <div className="col-md-3 col-6">
                                             <input className='form-control form-control-sm' id='search-field' placeholder='Search Todo...' onChange={(e) => {
+                                                this.onSearch();
                                                 if (!e.target.value) {
                                                     this.getAllTodo();
                                                 }
                                             }} />
                                         </div>
                                         <div className="col-md-3 col-4">
-                                            <select className='form-control form-control-sm w-100' defaultValue={""} id='status-dropdown'>
+                                            <select className='form-control form-control-sm w-100' defaultValue={""} onChange={(e) => this.getAllTodo({ dateFilter: e.target.value })} id='status-dropdown'>
                                                 <option value="">--All Status--</option>
                                                 <option value="1">Pending</option>
                                                 <option value="2">Completed</option>
                                                 <option value="3">Deleted</option>
                                             </select>
                                         </div>
-                                        <div className="col-md-3 col-4">
-                                            <select className='form-control form-control-sm w-100' defaultValue={""} id='date-dropdown' onChange={(e) => this.getAllTodo({ dateFilter: e.target.value })}>
-                                                <option value="">--All Date--</option>
-                                                <option value="DAILY">Pending</option>
-                                                <option value="YESTERDAY">Completed</option>
-                                                <option value="WEEKLY">Deleted</option>
-                                                <option value="MONTHLY">Deleted</option>
-                                            </select>
+                                        <div className="col-md-4">
+                                            <DateRange onApplyClick={(e, p) => { this.getAllTodo({ fromDate: p.startDate._d, toDate: p.endDate._d }) }} />
                                         </div>
                                         <div className="col-md-2 col-2">
-                                            <button className='btn btn-sm btn-warning w-sm-100' type='submit'> <TbSearch size={20} /></button>
-                                        </div>
-                                        <div className="col-md-4">
-                                            <DateRange onApplyClick={(e, p) => { this.getAllTodo({ fromDate: p.startDate.toDate(), toDate: p.endDate.toDate() }) }} />
+                                            <button className='btn btn-sm btn-warning w-sm-100' onClick={() => this.resetTable()}><GrPowerReset size={20} /></button>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +170,7 @@ class Todo extends Component {
                                                             <td><Badge bg={data.status === 1 ? 'info' : data.status === 2 ? 'success' : data.status === 3 ? 'danger' : ''} > {data.status === 1 ? 'Pending' : data.status === 2 ? 'Completed' : data.status === 3 ? 'Deleted' : ''}</Badge></td>
                                                             <td>{dateTimeConverter(data.create_date)}</td>
                                                             <td style={{ display: 'flex', justifyContent: 'center', gap: '1%' }}>
-                                                                <button className='btn btn-sm btn-dark' title='Edit'><i className='bi bi-pencil-square' ></i></button>
+                                                                <button className='btn btn-sm btn-dark' title='Edit' onClick={()=>this.addTodoModalShow()}><i className='bi bi-pencil-square' ></i></button>
                                                                 <ConfirmationModal buttonComponent={<button title='Delete' className='btn btn-sm btn-danger'> <i className='bi bi-trash3'></i> </button>} />
                                                             </td>
                                                         </tr>

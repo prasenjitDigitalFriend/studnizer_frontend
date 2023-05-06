@@ -1,0 +1,143 @@
+.task-calendar-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.task-calendar-container .task-list-container {
+    width: 280px;
+    height: auto;
+    padding: 20px;
+    background-color: var(--dim-gray-2);
+}
+
+.task-calendar-container .task-list-container .task-body {
+    width: 100%;
+    height: auto;
+    max-height: 340px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.task-calendar-container .task-list-container .task-body::-webkit-scrollbar {
+    display: none;
+}
+
+
+.task-calendar-container .task-list-container .task-body .task-item {
+    width: 100%;
+    height: auto;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: var(--primary);
+    display: flex;
+    align-items: center;
+}
+
+.task-calendar-container .task-list-container .task-body .task-item .text-section {
+    width: calc(100% - 41px);
+    height: auto;
+    text-align: left;
+}
+
+.task-calendar-container .task-list-container .task-body .task-item .text-section .task-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.task-calendar-container .task-list-container .task-body .task-item .action-section {
+    width: auto;
+    height: auto;
+    text-align: right;
+}
+
+.task-calendar-container .task-list-container .task-footer {
+    width: 100%;
+    height: auto;
+}
+
+.task-calendar-container .task-list-container .task-footer .btn-add-task {
+    width: 100%;
+    height: auto;
+    background-color: var(--primary);
+    border-radius: 50px;
+    text-align: center;
+}
+
+.task-calendar-container .task-list-container .task-footer .btn-add-task span {
+    margin: 0 auto;
+}
+
+.task-calendar-container .calendar-container {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+}
+
+.fc-timeline-event{
+    border-radius: 4px !important;
+}
+
+.fc-event-main{
+    word-break: break-all;
+}
+
+.fc .fc-daygrid-day-frame{
+    overflow: hidden;
+}
+
+/* add/edit task modal */
+.task-form-container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.task-form-container .task-form-item {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.task-form-container .task-form-item .label-section {
+    width: 25%;
+    height: auto;
+}
+
+.task-form-container .task-form-item .label-section .task-label {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.task-form-container .task-form-item .control-section {
+    width: 70%;
+    height: auto;
+}
+
+.task-form-container .task-form-item .label-section .control-section .form-inputs {
+    width: 100%;
+    height: auto;
+}
+
+/* add/edit task modal end */
+
+
+/* responsive designs */
+.task-calendar-container .task-list-container {
+    width: 250px;
+    padding: 10px;
+}
+
+.task-calendar-container .calendar-container {
+    width: 100%;
+}
+
+/* responsive designs end */
